@@ -39,6 +39,10 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        loginViewModel.getUser.observe(this) { user ->
+            this.user = user
+        }
+
         loginViewModel.message.observe(this) {
             if (it.isNotEmpty()) {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
@@ -56,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
 
             when {
                 email.isEmpty() -> binding.emailEditTextLayout.error = getString(R.string.empty_email)
-                password.isEmpty() -> binding.passwordEditTextLayout.error = getString(R.string.empty_password)
+                password.isEmpty() || password.length<8 -> binding.passwordEditTextLayout.error = getString(R.string.empty_password)
                 else -> {
                     loginViewModel.userLogin(email, password)
                 }
@@ -82,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginResponse.observe(this) {response ->
             val result = response.loginResult
             user = UserModel(result.name, result.token, true)
-
+            Log.d(TAG, "nama : ${user.isLogin}")
             loginViewModel.saveUserPref(user)
         }
     }
@@ -93,5 +97,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-
+    companion object {
+        private const val TAG = "LoginActivity"
+    }
 }

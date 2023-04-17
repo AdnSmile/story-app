@@ -51,10 +51,8 @@ class MyEditText : TextInputEditText {
             }
 
             override fun afterTextChanged(s: Editable) {
-                // Do nothing.
                 if (s.length<8) {
                     isError = true
-//                    error = R.string.password_6.toString()
                     setError(context.getString(R.string.password_6), null)
                 } else {
                     isError = false

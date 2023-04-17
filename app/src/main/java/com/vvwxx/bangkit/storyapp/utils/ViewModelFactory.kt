@@ -7,6 +7,7 @@ import com.vvwxx.bangkit.storyapp.model.StoryAppRepository
 import com.vvwxx.bangkit.storyapp.model.UserPreferences
 import com.vvwxx.bangkit.storyapp.ui.home.HomeViewModel
 import com.vvwxx.bangkit.storyapp.ui.login.LoginViewModel
+import com.vvwxx.bangkit.storyapp.ui.welcome.MainViewModel
 
 class ViewModelFactory(private val pref: StoryAppRepository): ViewModelProvider.NewInstanceFactory() {
 
@@ -18,6 +19,9 @@ class ViewModelFactory(private val pref: StoryAppRepository): ViewModelProvider.
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(pref) as T
+            }
+            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
+                MainViewModel(pref) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

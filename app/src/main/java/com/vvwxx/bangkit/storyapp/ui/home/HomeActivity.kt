@@ -1,6 +1,7 @@
 package com.vvwxx.bangkit.storyapp.ui.home
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.vvwxx.bangkit.storyapp.data.api.ApiService
 import com.vvwxx.bangkit.storyapp.model.StoryAppRepository
 import com.vvwxx.bangkit.storyapp.model.UserPreferences
+import com.vvwxx.bangkit.storyapp.ui.welcome.MainActivity
 import com.vvwxx.bangkit.storyapp.utils.ViewModelFactory
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -31,11 +33,15 @@ class HomeActivity : AppCompatActivity() {
         factory = ViewModelFactory.getInstance(this)
 
         setupView()
-        loginSession()
+        setupAction()
 
-        binding.logoutButton.setOnClickListener {
-
+        homeViewModel.getUserPref().observe(this) {user ->
+            if (!user.isLogin) {
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
         }
+
     }
 
     private fun setupView() {
@@ -51,7 +57,9 @@ class HomeActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    private fun loginSession() {
-//        homeViewModel.
+    private fun setupAction() {
+        binding.logoutButton.setOnClickListener {
+            homeViewModel.logout()
+        }
     }
 }
