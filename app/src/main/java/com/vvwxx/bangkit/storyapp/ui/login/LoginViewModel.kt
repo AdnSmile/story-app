@@ -39,8 +39,4 @@ class LoginViewModel(private val storyRepository: StoryAppRepository) : ViewMode
             storyRepository.saveUserPref(user)
         }
     }
-
-    companion object {
-        private const val TAG = "LoginViewModel"
-    }
 }

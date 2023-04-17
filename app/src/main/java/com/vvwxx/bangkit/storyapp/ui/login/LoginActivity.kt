@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
@@ -43,9 +44,13 @@ class LoginActivity : AppCompatActivity() {
             this.user = user
         }
 
+        loginViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+
         loginViewModel.message.observe(this) {
             if (it.isNotEmpty()) {
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                showToast(it)
             }
         }
 
@@ -91,10 +96,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun showToast() {
-        loginViewModel.message.observe(this) {
-            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-        }
+    private fun showToast(message: String) {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     companion object {

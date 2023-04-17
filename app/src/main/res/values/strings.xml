@@ -18,6 +18,7 @@
 
     <string name="empty_email">Masukkan email</string>
     <string name="empty_password">Masukkan password</string>
+    <string name="empty_name">Masukkan nama</string>
 
     <string name="password_6">Password tidak boleh kurang dari 8</string>
 </resources>
