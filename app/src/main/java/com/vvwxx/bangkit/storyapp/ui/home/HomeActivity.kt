@@ -44,7 +44,7 @@ class HomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        homeViewModel.getUserPref().observe(this) {user ->
+        homeViewModel.getUser.observe(this) {user ->
             if (!user.isLogin) {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()

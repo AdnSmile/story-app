@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import com.vvwxx.bangkit.storyapp.data.api.ApiService
+import com.vvwxx.bangkit.storyapp.data.response.AllStoriesResponse
+import com.vvwxx.bangkit.storyapp.data.response.ListStoryItem
 import com.vvwxx.bangkit.storyapp.data.response.LoginResponse
 import com.vvwxx.bangkit.storyapp.data.response.RegisterResponse
 import org.json.JSONObject
@@ -30,6 +32,9 @@ class StoryAppRepository(
 
     private val _registerRespon = MutableLiveData<RegisterResponse> ()
     val registerResponse: LiveData<RegisterResponse> = _registerRespon
+
+    private val _listStories = MutableLiveData<List<ListStoryItem>> ()
+    val listStories: LiveData<List<ListStoryItem>> = _listStories
 
     fun userLogin(email: String, password: String) {
         _isLoading.value = true
@@ -82,6 +87,35 @@ class StoryAppRepository(
             }
 
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                _isLoading.value = false
+                _message.value = t.message
+                Log.e(TAG, "onFailure: ${t.message}")
+            }
+
+        })
+    }
+
+    fun getAllStories(token: String) {
+        Log.e(TAG, "Masuk getAllStories")
+        _isLoading.value = true
+        val client = apiService.getAllStories("Bearer $token")
+        client.enqueue(object : Callback<AllStoriesResponse> {
+            override fun onResponse(
+                call: Call<AllStoriesResponse>,
+                response: Response<AllStoriesResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful) {
+                    Log.e(TAG, response.message())
+                    _listStories.value = response.body()?.listStory
+                    _message.value = response.message()
+                } else {
+                    _message.value = response.message()
+                    Log.e(TAG, "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<AllStoriesResponse>, t: Throwable) {
                 _isLoading.value = false
                 _message.value = t.message
                 Log.e(TAG, "onFailure: ${t.message}")
