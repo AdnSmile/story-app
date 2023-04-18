@@ -21,4 +21,9 @@
     <string name="empty_name">Masukkan nama</string>
 
     <string name="password_6">Password tidak boleh kurang dari 8</string>
+    <string name="text_home">Home</string>
+    <string name="text_profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_keluar">Keluar</string>
 </resources>

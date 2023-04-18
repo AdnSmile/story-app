@@ -66,7 +66,6 @@ class LoginActivity : AppCompatActivity() {
                 else -> {
                     loginViewModel.userLogin(email, password)
                     loginViewModel.loginResponse.observe(this) {
-                        Toast.makeText(this, user.isLogin.toString(), Toast.LENGTH_SHORT).show()
                         if (it != null && !it.error) {
                             loginViewModel.loginPref()
                         }

@@ -2,20 +2,19 @@ package com.vvwxx.bangkit.storyapp.ui.home
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.WindowInsets
-import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.preferencesDataStore
 import com.vvwxx.bangkit.storyapp.databinding.ActivityHomeBinding
 import androidx.datastore.preferences.core.Preferences
-import androidx.lifecycle.ViewModelProvider
-import com.vvwxx.bangkit.storyapp.data.api.ApiService
-import com.vvwxx.bangkit.storyapp.model.StoryAppRepository
-import com.vvwxx.bangkit.storyapp.model.UserPreferences
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.vvwxx.bangkit.storyapp.R
 import com.vvwxx.bangkit.storyapp.ui.welcome.MainActivity
 import com.vvwxx.bangkit.storyapp.utils.ViewModelFactory
 
@@ -32,8 +31,18 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         factory = ViewModelFactory.getInstance(this)
 
-        setupView()
-        setupAction()
+        setSupportActionBar(binding.toolbar)
+
+        val navView: BottomNavigationView = binding.navView
+        val navController = findNavController(R.id.nav_host_fragment)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_home, R.id.nav_profile
+            )
+        )
+
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
 
         homeViewModel.getUserPref().observe(this) {user ->
             if (!user.isLogin) {
@@ -42,24 +51,5 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-    }
-
-    private fun setupView() {
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
-        supportActionBar?.hide()
-    }
-
-    private fun setupAction() {
-        binding.logoutButton.setOnClickListener {
-            homeViewModel.logout()
-        }
     }
 }

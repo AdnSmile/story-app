@@ -9,9 +9,4 @@ class HomeViewModel(private val storyRepository: StoryAppRepository) : ViewModel
 
     fun getUserPref() = storyRepository.getUserPref()
 
-    fun logout() {
-        viewModelScope.launch {
-            storyRepository.logout()
-        }
-    }
 }
