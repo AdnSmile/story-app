@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
         factory = ViewModelFactory.getInstance(this)
 
         mainViewModel.getUserPref().observe(this) { user ->
-            Log.d("MainActivity", user.isLogin.toString())
             if (user.isLogin) {
                 startActivity(Intent(this, HomeActivity::class.java))
                 finish()

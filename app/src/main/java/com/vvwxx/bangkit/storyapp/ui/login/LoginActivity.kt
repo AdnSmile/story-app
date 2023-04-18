@@ -30,8 +30,9 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         factory = ViewModelFactory.getInstance(this)
 
-        loginViewModel.loginResponse.observe(this) {
-            if (it != null) {
+        loginViewModel.getUser.observe(this) { user ->
+            this.user = user
+            if (user.isLogin) {
                 saveUserPrefData()
                 val intent = Intent(this, HomeActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -40,16 +41,12 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        loginViewModel.getUser.observe(this) { user ->
-            this.user = user
-        }
-
         loginViewModel.isLoading.observe(this) {
             showLoading(it)
         }
 
         loginViewModel.message.observe(this) {
-            if (it.isNotEmpty()) {
+            if (it.isNotEmpty() && !user.isLogin) {
                 showToast(it)
             }
         }
@@ -68,6 +65,12 @@ class LoginActivity : AppCompatActivity() {
                 password.isEmpty() || password.length<8 -> binding.passwordEditTextLayout.error = getString(R.string.empty_password)
                 else -> {
                     loginViewModel.userLogin(email, password)
+                    loginViewModel.loginResponse.observe(this) {
+                        Toast.makeText(this, user.isLogin.toString(), Toast.LENGTH_SHORT).show()
+                        if (it != null && !it.error) {
+                            loginViewModel.loginPref()
+                        }
+                    }
                 }
             }
         }
@@ -91,7 +94,7 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginResponse.observe(this) {response ->
             val result = response.loginResult
             user = UserModel(result.name, result.token, true)
-            Log.d(TAG, "nama : ${user.isLogin}")
+            Log.d(TAG, "nama : ${user.token}")
             loginViewModel.saveUserPref(user)
         }
     }

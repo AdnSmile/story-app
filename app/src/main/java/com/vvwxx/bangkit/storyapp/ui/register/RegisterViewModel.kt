@@ -13,6 +13,8 @@ class RegisterViewModel(private val storyRepository: StoryAppRepository) : ViewM
     val isLoading: LiveData<Boolean> = storyRepository.isLoading
     val message: LiveData<String> = storyRepository.message
 
+    val getUser = storyRepository.getUserPref()
+
     fun userRegister(name: String, email: String, password: String) {
         viewModelScope.launch {
             storyRepository.userRegister(name, email, password)
