@@ -38,9 +38,6 @@ class StoryAppRepository(
     private val _storiesData = MutableLiveData<DetailResponse> ()
     val storiesData : LiveData<DetailResponse> = _storiesData
 
-    private val _uploadStoriesResponse = MutableLiveData<UploadStoriesResponse> ()
-    val uploadStoriesResponse: LiveData<UploadStoriesResponse> = _uploadStoriesResponse
-
     fun userLogin(email: String, password: String) {
         _isLoading.value = true
         val client = apiService.postLogin(email, password)
@@ -167,7 +164,6 @@ class StoryAppRepository(
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null && !responseBody.error) {
-                        _uploadStoriesResponse.value = response.body()
                         _message.value = "Uploading stories ${responseBody.message}"
                     }
                 } else {

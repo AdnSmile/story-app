@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Story App</string>
+
+    <string name="signup">Sign Up</string>
+    <string name="login">Login</string>
+    <string name="message_welcome_page">Want to learn or update your daily activities on Dicoding Stories, find friends and get partners!</string>
+    <string name="title_welcome_page">Welcome to Dicoding Stories!</string>
+    <string name="title_signup_page">Complete your personal data below</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="message_login_page">Please enter your data first</string>
+    <string name="title_login_page">Are you ready to upgrade your skills?</string>
+    <string name="name">Name</string>
+    <string name="copyright">© 2023 Dicoding</string>
+    <string name="message_main_page">Happy Learning in Dicoding.</string>
+    <string name="logout">Exit</string>
+
+    <string name="empty_email">Enter email</string>
+    <string name="empty_password">Enter password</string>
+    <string name="empty_name">Enter Name</string>
+
+    <string name="password_6">Passwords cannot be less than 8</string>
+    <string name="text_home">Home</string>
+    <string name="text_profile">Profile</string>
+    <string name="text_keluar">Exit</string>
+    <string name="text_lat">lat: </string>
+    <string name="lat_simbol">-</string>
+    <string name="text_lon">lon:</string>
+    <string name="text_camera">CAMERA</string>
+    <string name="text_gallery">GALLERY</string>
+    <string name="text_send">SEND</string>
+    <string name="text_add_button">Send Bottom</string>
+    <string name="text_hint_description">Description</string>
+    <string name="desc_stories_photo">Photo Stories</string>
+
+    <string name="ed_email_err">Must be a valid email</string>
+</resources>
