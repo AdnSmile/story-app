@@ -7,6 +7,7 @@ import com.vvwxx.bangkit.storyapp.data.response.UploadStoriesResponse
 import com.vvwxx.bangkit.storyapp.model.StoryAppRepository
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class CreateStoriesViewModel(private val storyRepository: StoryAppRepository) : ViewModel() {
 
@@ -16,7 +17,7 @@ class CreateStoriesViewModel(private val storyRepository: StoryAppRepository) : 
 
     val getUser = storyRepository.getUserPref()
 
-    fun uploadStories(photo: MultipartBody.Part, token: String, desc: String) {
+    fun uploadStories(photo: MultipartBody.Part, token: String, desc: RequestBody) {
         viewModelScope.launch {
             storyRepository.uploadStories(photo, token, desc)
         }

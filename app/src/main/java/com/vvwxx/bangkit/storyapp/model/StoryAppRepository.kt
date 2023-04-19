@@ -7,6 +7,7 @@ import androidx.lifecycle.asLiveData
 import com.vvwxx.bangkit.storyapp.data.api.ApiService
 import com.vvwxx.bangkit.storyapp.data.response.*
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -110,7 +111,7 @@ class StoryAppRepository(
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
-                    Log.e(TAG, response.message())
+                    Log.d(TAG, response.message())
                     _listStories.value = response.body()?.listStory
                     _message.value = response.message()
                 } else {
@@ -154,7 +155,7 @@ class StoryAppRepository(
         })
     }
 
-    fun uploadStories(photo: MultipartBody.Part, token: String, desc: String) {
+    fun uploadStories(photo: MultipartBody.Part, token: String, desc: RequestBody) {
         _isLoading.value = true
         val client = apiService.postStories(photo, "Bearer $token", desc)
         client.enqueue(object : Callback<UploadStoriesResponse> {
@@ -166,6 +167,7 @@ class StoryAppRepository(
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null && !responseBody.error) {
+                        _uploadStoriesResponse.value = response.body()
                         _message.value = "Uploading stories ${responseBody.message}"
                     }
                 } else {
