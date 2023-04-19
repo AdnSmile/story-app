@@ -14,7 +14,6 @@ import com.vvwxx.bangkit.storyapp.R
 import com.vvwxx.bangkit.storyapp.databinding.ActivityRegisterBinding
 import com.vvwxx.bangkit.storyapp.model.UserModel
 import com.vvwxx.bangkit.storyapp.ui.login.LoginActivity
-import com.vvwxx.bangkit.storyapp.ui.login.LoginViewModel
 import com.vvwxx.bangkit.storyapp.utils.ViewModelFactory
 
 class RegisterActivity : AppCompatActivity() {

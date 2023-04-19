@@ -4,12 +4,9 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
-import com.google.android.material.tabs.TabLayout.TabGravity
-import com.vvwxx.bangkit.storyapp.R
 import com.vvwxx.bangkit.storyapp.databinding.ActivityMainBinding
 import com.vvwxx.bangkit.storyapp.ui.home.HomeActivity
 import com.vvwxx.bangkit.storyapp.ui.login.LoginActivity

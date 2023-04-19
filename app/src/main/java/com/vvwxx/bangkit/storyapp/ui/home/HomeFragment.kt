@@ -1,5 +1,6 @@
 package com.vvwxx.bangkit.storyapp.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vvwxx.bangkit.storyapp.data.response.ListStoryItem
 import com.vvwxx.bangkit.storyapp.databinding.FragmentHomeBinding
+import com.vvwxx.bangkit.storyapp.ui.detail.DetailActivity
 import com.vvwxx.bangkit.storyapp.utils.ViewModelFactory
 
 class HomeFragment : Fragment() {
@@ -37,7 +39,6 @@ class HomeFragment : Fragment() {
         binding.rvStories.layoutManager = layoutManager
 
         homeViewModel.listStories.observe(requireActivity()) {stories ->
-            Toast.makeText(requireActivity(), "stories.", Toast.LENGTH_SHORT).show()
             setStoriesData(stories)
         }
 
@@ -49,9 +50,9 @@ class HomeFragment : Fragment() {
             homeViewModel.getAllStories(user.token)
         }
 
-//        homeViewModel.message.observe(requireActivity()) {
-//            // TODO buat message toast
-//        }
+        homeViewModel.message.observe(requireActivity()) {
+            showToast(it)
+        }
 
     }
 
@@ -67,11 +68,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun showSelectedStories(stories: ListStoryItem) {
-        Toast.makeText(requireActivity(), stories.name, Toast.LENGTH_SHORT).show()
+        val intent = Intent(requireActivity(), DetailActivity::class.java)
+        intent.putExtra(DetailActivity.EXTRA_USER, stories.id)
+        startActivity(intent)
     }
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
     }
 
 }

@@ -1,15 +1,13 @@
 package com.vvwxx.bangkit.storyapp.data.api
 
-import com.vvwxx.bangkit.storyapp.data.response.AllStoriesResponse
-import com.vvwxx.bangkit.storyapp.data.response.ListStoryItem
-import com.vvwxx.bangkit.storyapp.data.response.LoginResponse
-import com.vvwxx.bangkit.storyapp.data.response.RegisterResponse
+import com.vvwxx.bangkit.storyapp.data.response.*
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -32,4 +30,10 @@ interface ApiService {
     fun getAllStories(
         @Header("Authorization") token: String,
     ) : Call<AllStoriesResponse>
+
+    @GET("stories/{id}")
+    fun getDetailStories(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ) : Call<DetailResponse>
 }

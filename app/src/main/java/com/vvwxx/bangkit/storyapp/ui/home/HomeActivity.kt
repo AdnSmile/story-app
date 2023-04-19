@@ -1,14 +1,10 @@
 package com.vvwxx.bangkit.storyapp.ui.home
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.preferencesDataStore
 import com.vvwxx.bangkit.storyapp.databinding.ActivityHomeBinding
-import androidx.datastore.preferences.core.Preferences
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -18,7 +14,6 @@ import com.vvwxx.bangkit.storyapp.R
 import com.vvwxx.bangkit.storyapp.ui.welcome.MainActivity
 import com.vvwxx.bangkit.storyapp.utils.ViewModelFactory
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding

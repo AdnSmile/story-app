@@ -5,10 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import com.vvwxx.bangkit.storyapp.data.api.ApiService
-import com.vvwxx.bangkit.storyapp.data.response.AllStoriesResponse
-import com.vvwxx.bangkit.storyapp.data.response.ListStoryItem
-import com.vvwxx.bangkit.storyapp.data.response.LoginResponse
-import com.vvwxx.bangkit.storyapp.data.response.RegisterResponse
+import com.vvwxx.bangkit.storyapp.data.response.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -35,6 +32,9 @@ class StoryAppRepository(
 
     private val _listStories = MutableLiveData<List<ListStoryItem>> ()
     val listStories: LiveData<List<ListStoryItem>> = _listStories
+
+    private val _storiesData = MutableLiveData<DetailResponse> ()
+    val storiesData : LiveData<DetailResponse> = _storiesData
 
     fun userLogin(email: String, password: String) {
         _isLoading.value = true
@@ -121,6 +121,32 @@ class StoryAppRepository(
                 Log.e(TAG, "onFailure: ${t.message}")
             }
 
+        })
+    }
+
+    fun getDetailStories(token: String, id: String) {
+        _isLoading.value = true
+        val client = apiService.getDetailStories("Bearer $token", id)
+        client.enqueue(object : Callback<DetailResponse> {
+            override fun onResponse(
+                call: Call<DetailResponse>,
+                response: Response<DetailResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful){
+                    _storiesData.value = response.body()
+                    _message.value = response.message()
+                } else {
+                    _message.value = response.message()
+                    Log.e(TAG, "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<DetailResponse>, t: Throwable) {
+                _isLoading.value = false
+                _message.value = t.message
+                Log.e(TAG, "onFailure: ${t.message}")
+            }
         })
     }
 

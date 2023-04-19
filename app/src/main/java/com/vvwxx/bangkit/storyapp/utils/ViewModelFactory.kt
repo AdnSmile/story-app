@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.vvwxx.bangkit.storyapp.model.StoryAppRepository
-import com.vvwxx.bangkit.storyapp.model.UserPreferences
+import com.vvwxx.bangkit.storyapp.ui.detail.DetailViewModel
 import com.vvwxx.bangkit.storyapp.ui.home.HomeViewModel
 import com.vvwxx.bangkit.storyapp.ui.login.LoginViewModel
 import com.vvwxx.bangkit.storyapp.ui.profile.ProfileViewModel
@@ -30,6 +30,9 @@ class ViewModelFactory(private val pref: StoryAppRepository): ViewModelProvider.
             }
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel(pref) as T
+            }
+            modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
+                DetailViewModel(pref) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

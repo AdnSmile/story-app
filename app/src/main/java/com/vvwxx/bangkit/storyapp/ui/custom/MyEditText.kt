@@ -6,9 +6,6 @@ import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.view.MotionEvent
-import android.view.View
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.vvwxx.bangkit.storyapp.R
