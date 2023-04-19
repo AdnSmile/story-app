@@ -35,4 +35,6 @@
     <string name="text_add_button">Add Button</string>
     <string name="text_hint_description">Description</string>
     <string name="desc_stories_photo">Stories Photo</string>
+
+    <string name="ed_email_err">must be a valid email</string>
 </resources>
