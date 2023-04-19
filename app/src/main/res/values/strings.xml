@@ -29,4 +29,8 @@
     <string name="text_lat">lat: </string>
     <string name="lat_simbol">-</string>
     <string name="text_lon">lon:</string>
+    <string name="text_camera">KAMERA</string>
+    <string name="text_gallery">GALERI</string>
+    <string name="text_send">KIRIM</string>
+    <string name="text_add_button">Add Button</string>
 </resources>

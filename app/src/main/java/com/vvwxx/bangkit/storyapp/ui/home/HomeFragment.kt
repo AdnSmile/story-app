@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vvwxx.bangkit.storyapp.data.response.ListStoryItem
 import com.vvwxx.bangkit.storyapp.databinding.FragmentHomeBinding
+import com.vvwxx.bangkit.storyapp.ui.create.CreateStoriesActivity
 import com.vvwxx.bangkit.storyapp.ui.detail.DetailActivity
 import com.vvwxx.bangkit.storyapp.utils.ViewModelFactory
 
@@ -54,6 +55,14 @@ class HomeFragment : Fragment() {
             showToast(it)
         }
 
+        setupAction()
+    }
+
+    private fun setupAction() {
+        binding.addStories.setOnClickListener {
+            val intent = Intent(requireActivity(), CreateStoriesActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setStoriesData(listStories: List<ListStoryItem>) {

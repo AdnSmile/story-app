@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import com.vvwxx.bangkit.storyapp.data.api.ApiService
 import com.vvwxx.bangkit.storyapp.data.response.*
+import okhttp3.MultipartBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -35,6 +36,9 @@ class StoryAppRepository(
 
     private val _storiesData = MutableLiveData<DetailResponse> ()
     val storiesData : LiveData<DetailResponse> = _storiesData
+
+    private val _uploadStoriesResponse = MutableLiveData<UploadStoriesResponse> ()
+    val uploadStoriesResponse: LiveData<UploadStoriesResponse> = _uploadStoriesResponse
 
     fun userLogin(email: String, password: String) {
         _isLoading.value = true
@@ -147,6 +151,34 @@ class StoryAppRepository(
                 _message.value = t.message
                 Log.e(TAG, "onFailure: ${t.message}")
             }
+        })
+    }
+
+    fun uploadStories(photo: MultipartBody.Part, token: String, desc: String) {
+        _isLoading.value = true
+        val client = apiService.postStories(photo, "Bearer $token", desc)
+        client.enqueue(object : Callback<UploadStoriesResponse> {
+            override fun onResponse(
+                call: Call<UploadStoriesResponse>,
+                response: Response<UploadStoriesResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if (responseBody != null && !responseBody.error) {
+                        _message.value = "Uploading stories ${responseBody.message}"
+                    }
+                } else {
+                    _message.value = response.message()
+                }
+            }
+
+            override fun onFailure(call: Call<UploadStoriesResponse>, t: Throwable) {
+                _isLoading.value = false
+                _message.value = t.message
+                Log.e(TAG, "onFailure: ${t.message}")
+            }
+
         })
     }
 
