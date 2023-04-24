@@ -2,7 +2,9 @@ package com.vvwxx.bangkit.storyapp.ui.create
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.ExifInterface
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,10 +19,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.vvwxx.bangkit.storyapp.databinding.ActivityCreateStoriesBinding
 import com.vvwxx.bangkit.storyapp.ui.home.HomeActivity
-import com.vvwxx.bangkit.storyapp.utils.ViewModelFactory
+import com.vvwxx.bangkit.storyapp.utils.*
 import java.io.File
-import com.vvwxx.bangkit.storyapp.utils.createTempFile
-import com.vvwxx.bangkit.storyapp.utils.uriToFile
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -31,8 +31,8 @@ class CreateStoriesActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateStoriesBinding
     private lateinit var currentPhotoPath: String
-    private var getFile: File? = null
     private lateinit var token: String
+    private lateinit var finalFile: File
 
     private lateinit var factory: ViewModelFactory
     private val viewModel: CreateStoriesViewModel by viewModels { factory }
@@ -73,16 +73,21 @@ class CreateStoriesActivity : AppCompatActivity() {
             )
         }
 
-        viewModel.isLoading.observe(this) {
-            showLoading(it)
-        }
-
         viewModel.getUser.observe(this) {
             token = it.token
         }
 
+        viewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+
         viewModel.message.observe(this) {
             showToast(it)
+            if (it.equals("Uploading stories Story created successfully")) {
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
 
         setupAction()
@@ -98,28 +103,25 @@ class CreateStoriesActivity : AppCompatActivity() {
         }
 
         binding.btnSend.setOnClickListener {
-            uploadImage()
+             uploadImage()
         }
     }
 
     private fun uploadImage() {
-        if (getFile != null) {
-            val file = reduceFileImage(getFile as File)
+        if (finalFile != null) {
 
             val desc = binding.edDesc.text.toString()
 
             val description = desc.toRequestBody("text/plain".toMediaType())
-            val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+            val requestImageFile = finalFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
             val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
                 "photo",
-                file.name,
+                finalFile.name,
                 requestImageFile
             )
             Log.d("CreateStories", desc)
             viewModel.uploadStories(imageMultipart, token, description)
 
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
         } else {
             showToast("Silahkan masukkan berkas gambar terlebih dahulu.")
         }
@@ -143,6 +145,7 @@ class CreateStoriesActivity : AppCompatActivity() {
                 it
             )
             currentPhotoPath = it.absolutePath
+
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
             launcherIntentCamera.launch(intent)
         }
@@ -154,8 +157,10 @@ class CreateStoriesActivity : AppCompatActivity() {
     ) {
         if (it.resultCode == RESULT_OK) {
             val myFile = File(currentPhotoPath)
-            getFile = myFile
-            val result = BitmapFactory.decodeFile(myFile.path)
+
+            val result = rotatePhoto(myFile)
+            finalFile = convertBitmapFile(result, myFile)
+            finalFile = reduceFileImage(finalFile)
             binding.imgPreview.setImageBitmap(result)
         }
     }
@@ -166,14 +171,10 @@ class CreateStoriesActivity : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             val selectedImg: Uri = result.data?.data as Uri
             val myFile = uriToFile(selectedImg, this)
-            getFile = myFile
+            finalFile = myFile
 
             binding.imgPreview.setImageURI(selectedImg)
         }
-    }
-
-    private fun reduceFileImage(file: File): File {
-        return file
     }
 
     private fun showToast(message: String) {
@@ -182,6 +183,21 @@ class CreateStoriesActivity : AppCompatActivity() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun rotatePhoto(myFile: File) : Bitmap {
+        val exifInterface: ExifInterface = ExifInterface(currentPhotoPath)
+        val rotate: Int = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)
+
+        val photo = BitmapFactory.decodeFile(myFile.path)
+
+        val result = when (rotate) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(photo, 90f)
+            ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(photo, 180f)
+            ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(photo, 270f)
+            else -> photo
+        }
+        return result
     }
 
     companion object {

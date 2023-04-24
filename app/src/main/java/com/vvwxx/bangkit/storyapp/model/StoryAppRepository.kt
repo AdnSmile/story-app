@@ -26,6 +26,9 @@ class StoryAppRepository(
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    private val _isAddLoading = MutableLiveData<Boolean>()
+    val isAddLoading: LiveData<Boolean> = _isAddLoading
+
     private val _message = MutableLiveData<String>()
     val message: LiveData<String> = _message
 
@@ -98,7 +101,6 @@ class StoryAppRepository(
     }
 
     fun getAllStories(token: String) {
-        Log.e(TAG, "Masuk getAllStories")
         _isLoading.value = true
         val client = apiService.getAllStories("Bearer $token")
         client.enqueue(object : Callback<AllStoriesResponse> {
@@ -127,17 +129,18 @@ class StoryAppRepository(
     }
 
     fun getDetailStories(token: String, id: String) {
-        _isLoading.value = true
+        _isAddLoading.value = true
         val client = apiService.getDetailStories("Bearer $token", id)
         client.enqueue(object : Callback<DetailResponse> {
             override fun onResponse(
                 call: Call<DetailResponse>,
                 response: Response<DetailResponse>
             ) {
-                _isLoading.value = false
+                _isAddLoading.value = false
                 if (response.isSuccessful){
                     _storiesData.value = response.body()
                     _message.value = response.message()
+                    Log.e(TAG, response.message())
                 } else {
                     _message.value = response.message()
                     Log.e(TAG, "onFailure: ${response.message()}")
@@ -145,7 +148,7 @@ class StoryAppRepository(
             }
 
             override fun onFailure(call: Call<DetailResponse>, t: Throwable) {
-                _isLoading.value = false
+                _isAddLoading.value = false
                 _message.value = t.message
                 Log.e(TAG, "onFailure: ${t.message}")
             }

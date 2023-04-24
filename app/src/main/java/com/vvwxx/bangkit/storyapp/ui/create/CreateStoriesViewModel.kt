@@ -10,7 +10,7 @@ import okhttp3.RequestBody
 
 class CreateStoriesViewModel(private val storyRepository: StoryAppRepository) : ViewModel() {
 
-    val isLoading: LiveData<Boolean> = storyRepository.isLoading
+    val isLoading: LiveData<Boolean> = storyRepository.isAddLoading
     val message: LiveData<String> = storyRepository.message
 
     val getUser = storyRepository.getUserPref()
