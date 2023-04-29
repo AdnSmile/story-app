@@ -3,10 +3,10 @@ package com.vvwxx.bangkit.storyapp.ui.profile
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.vvwxx.bangkit.storyapp.databinding.FragmentProfileBinding
 import com.vvwxx.bangkit.storyapp.utils.ViewModelFactory

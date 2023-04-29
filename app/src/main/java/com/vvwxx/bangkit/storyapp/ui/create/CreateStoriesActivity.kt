@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.ExifInterface
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -14,18 +13,18 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.vvwxx.bangkit.storyapp.databinding.ActivityCreateStoriesBinding
-import com.vvwxx.bangkit.storyapp.ui.home.HomeActivity
 import com.vvwxx.bangkit.storyapp.utils.*
-import java.io.File
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 
 class CreateStoriesActivity : AppCompatActivity() {
 
@@ -84,8 +83,6 @@ class CreateStoriesActivity : AppCompatActivity() {
         viewModel.message.observe(this) {
             showToast(it)
             if (it.equals("Uploading stories Story created successfully")) {
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
                 finish()
             }
         }
@@ -108,23 +105,20 @@ class CreateStoriesActivity : AppCompatActivity() {
     }
 
     private fun uploadImage() {
-        if (finalFile != null) {
 
-            val desc = binding.edDesc.text.toString()
+        val desc = binding.edDesc.text.toString()
+        finalFile = reduceFileImage(finalFile)
 
-            val description = desc.toRequestBody("text/plain".toMediaType())
-            val requestImageFile = finalFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-                "photo",
-                finalFile.name,
-                requestImageFile
-            )
-            Log.d("CreateStories", desc)
-            viewModel.uploadStories(imageMultipart, token, description)
+        val description = desc.toRequestBody("text/plain".toMediaType())
+        val requestImageFile = finalFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+            "photo",
+            finalFile.name,
+            requestImageFile
+        )
+        Log.d("CreateStories", desc)
+        viewModel.uploadStories(imageMultipart, token, description)
 
-        } else {
-            showToast("Silahkan masukkan berkas gambar terlebih dahulu.")
-        }
     }
     private fun startGallery() {
         val intent = Intent()
@@ -160,7 +154,6 @@ class CreateStoriesActivity : AppCompatActivity() {
 
             val result = rotatePhoto(myFile)
             finalFile = convertBitmapFile(result, myFile)
-            finalFile = reduceFileImage(finalFile)
             binding.imgPreview.setImageBitmap(result)
         }
     }
@@ -171,8 +164,11 @@ class CreateStoriesActivity : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             val selectedImg: Uri = result.data?.data as Uri
             val myFile = uriToFile(selectedImg, this)
-            finalFile = myFile
 
+            currentPhotoPath = myFile.path
+
+            val photo = rotatePhoto(myFile)
+            finalFile = convertBitmapFile(photo, myFile)
             binding.imgPreview.setImageURI(selectedImg)
         }
     }
@@ -186,7 +182,7 @@ class CreateStoriesActivity : AppCompatActivity() {
     }
 
     private fun rotatePhoto(myFile: File) : Bitmap {
-        val exifInterface: ExifInterface = ExifInterface(currentPhotoPath)
+        val exifInterface = ExifInterface(currentPhotoPath)
         val rotate: Int = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)
 
         val photo = BitmapFactory.decodeFile(myFile.path)

@@ -6,10 +6,10 @@ import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.Patterns
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.vvwxx.bangkit.storyapp.R
-import android.util.Patterns
 
 class EmailEditText : TextInputEditText {
 

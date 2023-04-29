@@ -20,8 +20,8 @@ class StoryAppRepository(
 ) {
 
 
-    private val _loginRespon = MutableLiveData<LoginResponse>()
-    val loginResponse: LiveData<LoginResponse> = _loginRespon
+    private val _loginRespon = MutableLiveData<LoginResponse?>()
+    val loginResponse: LiveData<LoginResponse?> = _loginRespon
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -192,6 +192,7 @@ class StoryAppRepository(
     }
 
     suspend fun logout() {
+        _loginRespon.value = null
         pref.logout()
     }
 

@@ -1,16 +1,16 @@
 package com.vvwxx.bangkit.storyapp.ui.home
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import com.vvwxx.bangkit.storyapp.databinding.ActivityHomeBinding
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.vvwxx.bangkit.storyapp.R
+import com.vvwxx.bangkit.storyapp.databinding.ActivityHomeBinding
 import com.vvwxx.bangkit.storyapp.ui.welcome.MainActivity
 import com.vvwxx.bangkit.storyapp.utils.ViewModelFactory
 

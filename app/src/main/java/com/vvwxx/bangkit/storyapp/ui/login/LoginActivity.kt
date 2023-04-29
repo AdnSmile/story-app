@@ -4,7 +4,6 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,6 +11,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.vvwxx.bangkit.storyapp.R
 import com.vvwxx.bangkit.storyapp.databinding.ActivityLoginBinding
 import com.vvwxx.bangkit.storyapp.model.UserModel
@@ -37,9 +37,14 @@ class LoginActivity : AppCompatActivity() {
             if (user.isLogin) {
                 saveUserPrefData()
                 val intent = Intent(this, HomeActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
                 finish()
+            }
+        }
+
+        loginViewModel.loginResponse.observe(this) {
+            if (it != null && !it.error) {
+                loginViewModel.loginPref()
             }
         }
 
@@ -89,11 +94,6 @@ class LoginActivity : AppCompatActivity() {
                 password.isEmpty() || password.length<8 -> binding.passwordEditTextLayout.error = getString(R.string.empty_password)
                 else -> {
                     loginViewModel.userLogin(email, password)
-                    loginViewModel.loginResponse.observe(this) {
-                        if (it != null && !it.error) {
-                            loginViewModel.loginPref()
-                        }
-                    }
                 }
             }
         }
@@ -115,10 +115,12 @@ class LoginActivity : AppCompatActivity() {
 
     private fun saveUserPrefData() {
         loginViewModel.loginResponse.observe(this) {response ->
-            val result = response.loginResult
-            user = UserModel(result.name, result.token, true)
-            Log.d(TAG, "nama : ${user.token}")
-            loginViewModel.saveUserPref(user)
+            if (response != null) {
+                val result = response.loginResult
+                user = UserModel(result.name, result.token, true)
+                Log.d(TAG, "nama : ${user.token}")
+                loginViewModel.saveUserPref(user)
+            }
         }
     }
 
