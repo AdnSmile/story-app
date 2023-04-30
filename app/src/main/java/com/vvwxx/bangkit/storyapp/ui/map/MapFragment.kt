@@ -29,6 +29,8 @@ import com.vvwxx.bangkit.storyapp.utils.ViewModelFactory
 import java.io.IOException
 import java.util.*
 
+// TODO Belum kelar ni map
+
 class MapFragment : Fragment() {
 
     private val boundsBuilder = LatLngBounds.Builder()
@@ -161,14 +163,8 @@ class MapFragment : Fragment() {
     }
 
     private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
-
-//    private fun checkAttach(operation: Context.() -> Unit) {
-//        if (isAdded && context != null) {
-//            operation(requireContext())
-//        }
-//    }
 
     companion object {
         private const val TAG = "MapFragment"

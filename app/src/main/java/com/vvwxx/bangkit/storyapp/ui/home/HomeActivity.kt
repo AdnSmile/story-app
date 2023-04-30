@@ -30,11 +30,9 @@ class HomeActivity : AppCompatActivity() {
 
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment)
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_home, R.id.nav_profile
-            )
-        )
+        val appBarConfiguration = AppBarConfiguration.Builder(
+            R.id.nav_home, R.id.nav_map, R.id.nav_profile
+        ).build()
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
