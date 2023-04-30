@@ -38,6 +38,9 @@ class StoryAppRepository(
     private val _listStories = MutableLiveData<List<ListStoryItem>> ()
     val listStories: LiveData<List<ListStoryItem>> = _listStories
 
+    private val _listMap = MutableLiveData<List<ListStoryItem>> ()
+    val listMap: LiveData<List<ListStoryItem>> = _listMap
+
     private val _storiesData = MutableLiveData<DetailResponse> ()
     val storiesData : LiveData<DetailResponse> = _storiesData
 
@@ -175,6 +178,34 @@ class StoryAppRepository(
             }
 
             override fun onFailure(call: Call<UploadStoriesResponse>, t: Throwable) {
+                _isLoading.value = false
+                _message.value = t.message
+                Log.e(TAG, "onFailure: ${t.message}")
+            }
+
+        })
+    }
+
+    fun getListMap(token: String) {
+        _isLoading.value = true
+        val client = apiService.getMapStories("Bearer $token")
+        client.enqueue(object : Callback<AllStoriesResponse> {
+            override fun onResponse(
+                call: Call<AllStoriesResponse>,
+                response: Response<AllStoriesResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful) {
+                    Log.d(TAG, response.message())
+                    _listMap.value = response.body()?.listStory
+                    _message.value = response.message()
+                } else {
+                    _message.value = response.message()
+                    Log.e(TAG, "onFailure: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<AllStoriesResponse>, t: Throwable) {
                 _isLoading.value = false
                 _message.value = t.message
                 Log.e(TAG, "onFailure: ${t.message}")

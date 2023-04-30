@@ -34,4 +34,5 @@
     <string name="desc_stories_photo">Photo Stories</string>
 
     <string name="ed_email_err">Must be a valid email</string>
+    <string name="text_map">Map</string>
 </resources>

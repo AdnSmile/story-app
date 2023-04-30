@@ -41,4 +41,9 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Part("description") description: RequestBody,
     ) : Call<UploadStoriesResponse>
+
+    @GET("stories?lcoation=1")
+    fun getMapStories(
+        @Header("Authorization") token: String,
+    ) : Call<AllStoriesResponse>
 }

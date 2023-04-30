@@ -33,4 +33,5 @@
     <string name="desc_stories_photo">Cerita Foto</string>
 
     <string name="ed_email_err">Menggunakan email yang valid</string>
+    <string name="text_map">Map</string>
 </resources>

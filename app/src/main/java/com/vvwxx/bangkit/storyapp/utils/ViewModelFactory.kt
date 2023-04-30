@@ -8,6 +8,7 @@ import com.vvwxx.bangkit.storyapp.ui.create.CreateStoriesViewModel
 import com.vvwxx.bangkit.storyapp.ui.detail.DetailViewModel
 import com.vvwxx.bangkit.storyapp.ui.home.HomeViewModel
 import com.vvwxx.bangkit.storyapp.ui.login.LoginViewModel
+import com.vvwxx.bangkit.storyapp.ui.map.MapViewModel
 import com.vvwxx.bangkit.storyapp.ui.profile.ProfileViewModel
 import com.vvwxx.bangkit.storyapp.ui.register.RegisterViewModel
 import com.vvwxx.bangkit.storyapp.ui.welcome.MainViewModel
@@ -37,6 +38,9 @@ class ViewModelFactory(private val pref: StoryAppRepository): ViewModelProvider.
             }
             modelClass.isAssignableFrom(CreateStoriesViewModel::class.java) -> {
                 CreateStoriesViewModel(pref) as T
+            }
+            modelClass.isAssignableFrom(MapViewModel::class.java) -> {
+                MapViewModel(pref) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
