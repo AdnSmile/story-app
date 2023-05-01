@@ -29,8 +29,6 @@ import com.vvwxx.bangkit.storyapp.utils.ViewModelFactory
 import java.io.IOException
 import java.util.*
 
-// TODO Belum kelar ni map
-
 class MapFragment : Fragment() {
 
     private val boundsBuilder = LatLngBounds.Builder()
@@ -42,37 +40,23 @@ class MapFragment : Fragment() {
     private val mapViewModel: MapViewModel by viewModels { factory }
 
     private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-
         mMap = googleMap
 
-        mapViewModel.getUser.observe(requireActivity()) { user ->
+        mapViewModel.getUser.observe(viewLifecycleOwner) { user ->
             mapViewModel.getListMap(user.token)
         }
 
-        mapViewModel.isLoading.observe(requireActivity()) {
+        mapViewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
 
-        mapViewModel.message.observe(requireActivity()) {
-            showToast(it)
-        }
-
-        mapViewModel.listMap.observe(requireActivity()) { maps ->
+        mapViewModel.listMap.observe(viewLifecycleOwner) { maps ->
             addManyMarker(maps)
         }
 
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        mapViewModel.message.observe(viewLifecycleOwner) {
+            showToast(it)
+        }
 
         googleMap.uiSettings.isZoomControlsEnabled = true
         googleMap.uiSettings.isIndoorLevelPickerEnabled = true
@@ -163,7 +147,7 @@ class MapFragment : Fragment() {
     }
 
     private fun showToast(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {
