@@ -1,6 +1,5 @@
 package com.vvwxx.bangkit.storyapp.ui.map
 
-import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import androidx.fragment.app.Fragment

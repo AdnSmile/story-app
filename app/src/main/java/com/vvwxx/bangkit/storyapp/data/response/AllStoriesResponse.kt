@@ -1,5 +1,7 @@
 package com.vvwxx.bangkit.storyapp.data.response
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 data class AllStoriesResponse(
@@ -14,6 +16,7 @@ data class AllStoriesResponse(
 	val message: String
 )
 
+@Entity(tableName = "stories")
 data class ListStoryItem(
 
 	@field:SerializedName("photoUrl")
@@ -31,6 +34,7 @@ data class ListStoryItem(
 	@field:SerializedName("lon")
 	val lon: Double,
 
+	@PrimaryKey
 	@field:SerializedName("id")
 	val id: String,
 

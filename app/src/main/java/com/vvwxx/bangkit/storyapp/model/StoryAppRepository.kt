@@ -4,7 +4,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
+import androidx.paging.*
 import com.vvwxx.bangkit.storyapp.data.api.ApiService
+import com.vvwxx.bangkit.storyapp.data.db.StoriesDatabase
+import com.vvwxx.bangkit.storyapp.data.paging.StoriesRemoteMediator
 import com.vvwxx.bangkit.storyapp.data.response.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -16,7 +19,8 @@ import retrofit2.Response
 
 class StoryAppRepository(
     private val apiService: ApiService,
-    private val pref: UserPreferences
+    private val pref: UserPreferences,
+    private val db: StoriesDatabase
 ) {
 
 
@@ -34,9 +38,6 @@ class StoryAppRepository(
 
     private val _registerRespon = MutableLiveData<RegisterResponse> ()
     val registerResponse: LiveData<RegisterResponse> = _registerRespon
-
-    private val _listStories = MutableLiveData<List<ListStoryItem>> ()
-    val listStories: LiveData<List<ListStoryItem>> = _listStories
 
     private val _listMap = MutableLiveData<List<ListStoryItem>> ()
     val listMap: LiveData<List<ListStoryItem>> = _listMap
@@ -103,32 +104,17 @@ class StoryAppRepository(
         })
     }
 
-    fun getAllStories(token: String) {
-        _isLoading.value = true
-        val client = apiService.getAllStories("Bearer $token")
-        client.enqueue(object : Callback<AllStoriesResponse> {
-            override fun onResponse(
-                call: Call<AllStoriesResponse>,
-                response: Response<AllStoriesResponse>
-            ) {
-                _isLoading.value = false
-                if (response.isSuccessful) {
-                    Log.d(TAG, response.message())
-                    _listStories.value = response.body()?.listStory
-                    _message.value = response.message()
-                } else {
-                    _message.value = response.message()
-                    Log.e(TAG, "onFailure: ${response.message()}")
-                }
+    fun getAllStories(): LiveData<PagingData<ListStoryItem>> {
+        @OptIn(ExperimentalPagingApi::class)
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            remoteMediator = StoriesRemoteMediator(db, pref, apiService),
+            pagingSourceFactory = {
+                db.storiesDao().getAllStories()
             }
-
-            override fun onFailure(call: Call<AllStoriesResponse>, t: Throwable) {
-                _isLoading.value = false
-                _message.value = t.message
-                Log.e(TAG, "onFailure: ${t.message}")
-            }
-
-        })
+        ).liveData
     }
 
     fun getDetailStories(token: String, id: String) {
@@ -239,10 +225,11 @@ class StoryAppRepository(
 
         fun getInstance(
             apiService: ApiService,
-            pref: UserPreferences
+            pref: UserPreferences,
+            db: StoriesDatabase
         ): StoryAppRepository =
             instance ?: synchronized(this) {
-                instance ?: StoryAppRepository(apiService, pref)
+                instance ?: StoryAppRepository(apiService, pref, db)
             }.also { instance = it }
     }
 }

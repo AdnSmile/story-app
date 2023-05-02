@@ -8,10 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.vvwxx.bangkit.storyapp.data.response.ListStoryItem
+import com.vvwxx.bangkit.storyapp.data.paging.LoadingStateAdapter
 import com.vvwxx.bangkit.storyapp.databinding.FragmentHomeBinding
 import com.vvwxx.bangkit.storyapp.ui.create.CreateStoriesActivity
-import com.vvwxx.bangkit.storyapp.ui.detail.DetailActivity
 import com.vvwxx.bangkit.storyapp.utils.ViewModelFactory
 
 class HomeFragment : Fragment() {
@@ -21,6 +20,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var factory: ViewModelFactory
     private val homeViewModel: HomeViewModel by viewModels { factory }
+    private lateinit var adapter: StoriesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,19 +38,21 @@ class HomeFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireActivity())
         binding.rvStories.layoutManager = layoutManager
 
-        homeViewModel.listStories.observe(requireActivity()) {stories ->
-            setStoriesData(stories)
-        }
-
-        homeViewModel.isLoading.observe(requireActivity()) {
-            showLoading(it)
-        }
-
-        homeViewModel.getUser.observe(requireActivity()) { user->
-            homeViewModel.getAllStories(user.token)
+        homeViewModel.listStories.observe(viewLifecycleOwner) {
+            adapter.submitData(lifecycle, it)
         }
 
         setupAction()
+        setupAdapter()
+    }
+
+    private fun setupAdapter() {
+        adapter = StoriesAdapter()
+        binding.rvStories.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                adapter.retry()
+            }
+        )
     }
 
     private fun setupAction() {
@@ -60,25 +62,11 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setStoriesData(listStories: List<ListStoryItem>) {
-        val stories = ArrayList<ListStoryItem> ()
-        for (i in listStories) {
-            stories.add(i)
+    override fun onStart() {
+        super.onStart()
+        if (::adapter.isInitialized) {
+            adapter.refresh()
         }
-        val adapter = StoriesAdapter(stories) {
-            showSelectedStories(it)
-        }
-        binding.rvStories.adapter = adapter
-    }
-
-    private fun showSelectedStories(stories: ListStoryItem) {
-        val intent = Intent(requireActivity(), DetailActivity::class.java)
-        intent.putExtra(DetailActivity.EXTRA_USER, stories.id)
-        startActivity(intent)
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
 }

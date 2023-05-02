@@ -24,9 +24,11 @@ interface ApiService {
     ) : Call<RegisterResponse>
 
     @GET("stories")
-    fun getAllStories(
+    suspend fun getAllStories(
         @Header("Authorization") token: String,
-    ) : Call<AllStoriesResponse>
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+    ) : AllStoriesResponse
 
     @GET("stories/{id}")
     fun getDetailStories(
