@@ -1,6 +1,7 @@
 package com.vvwxx.bangkit.storyapp.ui.map
 
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.location.Geocoder
 import androidx.fragment.app.Fragment
 
@@ -20,6 +21,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.vvwxx.bangkit.storyapp.R
 import com.vvwxx.bangkit.storyapp.data.response.ListStoryItem
@@ -63,6 +65,7 @@ class MapFragment : Fragment() {
         googleMap.uiSettings.isMapToolbarEnabled = true
 
         getMyLocation()
+        setMapStyle()
     }
 
     override fun onCreateView(
@@ -139,6 +142,18 @@ class MapFragment : Fragment() {
             e.printStackTrace()
         }
         return addressName
+    }
+
+    private fun setMapStyle() {
+        try {
+            val success =
+                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireActivity(), R.raw.map_style))
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.")
+            }
+        } catch (exception: Resources.NotFoundException) {
+            Log.e(TAG, "Can't find style. Error: ", exception)
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
