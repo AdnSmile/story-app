@@ -28,7 +28,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/text_foto" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card"
@@ -54,6 +55,56 @@
             android:contentDescription="@string/desc_stories_photo" />
     </androidx.cardview.widget.CardView>
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="3dp"
+        android:text="@string/text_lokasi"
+        app:thumbTint="@color/navi"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/text_lat"
+        app:layout_constraintStart_toEndOf="@id/switch_location"
+        app:layout_constraintTop_toBottomOf="@+id/card" />
+
+    <TextView
+        android:id="@+id/tv_lat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/lat_simbol"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/card" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/text_lon"
+        app:layout_constraintStart_toEndOf="@+id/tv_lat"
+        app:layout_constraintTop_toBottomOf="@+id/card" />
+
+    <TextView
+        android:id="@+id/tv_lon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/lat_simbol"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/card" />
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailEditTextLayout"
@@ -66,7 +117,7 @@
         app:hintTextColor="@color/navi"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card">
+        app:layout_constraintTop_toBottomOf="@+id/tv_lon">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ed_desc"

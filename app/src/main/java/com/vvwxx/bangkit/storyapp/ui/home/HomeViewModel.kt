@@ -7,6 +7,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.vvwxx.bangkit.storyapp.data.response.ListStoryItem
 import com.vvwxx.bangkit.storyapp.model.StoryAppRepository
+import kotlinx.coroutines.launch
+
 class HomeViewModel(private val storyRepository: StoryAppRepository) : ViewModel() {
 
     val listStories: LiveData<PagingData<ListStoryItem>> = storyRepository.getAllStories().cachedIn(viewModelScope)
@@ -14,5 +16,11 @@ class HomeViewModel(private val storyRepository: StoryAppRepository) : ViewModel
     val message: LiveData<String> = storyRepository.message
 
     val getUser = storyRepository.getUserPref()
+
+    fun setLocationPref(lat: Float, lon: Float) {
+        viewModelScope.launch {
+            storyRepository.setLocation(lat, lon)
+        }
+    }
 
 }

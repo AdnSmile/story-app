@@ -35,4 +35,6 @@
     <string name="ed_email_err">Menggunakan email yang valid</string>
     <string name="text_map">Map</string>
     <string name="retry">COBA LAGI</string>
+    <string name="text_foto">Foto</string>
+    <string name="text_lokasi">Lokasi</string>
 </resources>

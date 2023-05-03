@@ -36,4 +36,6 @@
     <string name="ed_email_err">Must be a valid email</string>
     <string name="text_map">Map</string>
     <string name="retry">TRY AGAIN</string>
+    <string name="text_foto">Photo</string>
+    <string name="text_lokasi">Location</string>
 </resources>

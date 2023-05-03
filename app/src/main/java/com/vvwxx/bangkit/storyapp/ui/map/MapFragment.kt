@@ -1,6 +1,5 @@
 package com.vvwxx.bangkit.storyapp.ui.map
 
-import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Geocoder
 import androidx.fragment.app.Fragment
@@ -11,8 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -56,7 +53,7 @@ class MapFragment : Fragment() {
         }
 
         mapViewModel.message.observe(viewLifecycleOwner) {
-            showToast(it)
+            if (!it.equals("")) showToast(it)
         }
 
         googleMap.uiSettings.isZoomControlsEnabled = true
@@ -64,7 +61,6 @@ class MapFragment : Fragment() {
         googleMap.uiSettings.isCompassEnabled = true
         googleMap.uiSettings.isMapToolbarEnabled = true
 
-        getMyLocation()
         setMapStyle()
     }
 
@@ -83,30 +79,6 @@ class MapFragment : Fragment() {
         mapFragment?.getMapAsync(callback)
 
         factory = ViewModelFactory.getInstance(requireActivity())
-
-    }
-
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                getMyLocation()
-            }
-        }
-
-    private fun getMyLocation() {
-        if (activity?.let {
-                ContextCompat.checkSelfPermission(
-                    it.applicationContext,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            } == PackageManager.PERMISSION_GRANTED
-        ) {
-            mMap.isMyLocationEnabled = true
-        } else {
-            requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
-        }
     }
 
     private fun addManyMarker(maps: List<ListStoryItem>) {

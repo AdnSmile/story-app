@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.vvwxx.bangkit.storyapp.R
 import com.vvwxx.bangkit.storyapp.databinding.ActivityCreateStoriesBinding
 import com.vvwxx.bangkit.storyapp.utils.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -32,6 +33,10 @@ class CreateStoriesActivity : AppCompatActivity() {
     private lateinit var currentPhotoPath: String
     private lateinit var token: String
     private lateinit var finalFile: File
+    private var lat: Float = 0.0f
+    private var lon: Float = 0.0f
+    private var isLocationChecked = false
+
 
     private lateinit var factory: ViewModelFactory
     private val viewModel: CreateStoriesViewModel by viewModels { factory }
@@ -74,6 +79,8 @@ class CreateStoriesActivity : AppCompatActivity() {
 
         viewModel.getUser.observe(this) {
             token = it.token
+            lat = it.lat
+            lon = it.lon
         }
 
         viewModel.isLoading.observe(this) {
@@ -81,8 +88,8 @@ class CreateStoriesActivity : AppCompatActivity() {
         }
 
         viewModel.message.observe(this) {
-            showToast(it)
             if (it.equals("Uploading stories Story created successfully")) {
+                showToast(it)
                 finish()
             }
         }
@@ -102,6 +109,19 @@ class CreateStoriesActivity : AppCompatActivity() {
         binding.btnSend.setOnClickListener {
              uploadImage()
         }
+
+        binding.switchLocation.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                isLocationChecked = true
+                binding.tvLat.text = this.lat.toString()
+                binding.tvLon.text = this.lon.toString()
+            } else {
+                isLocationChecked = false
+                binding.tvLat.text = getString(R.string.lat_simbol)
+                binding.tvLon.text = getString(R.string.lat_simbol)
+            }
+
+        }
     }
 
     private fun uploadImage() {
@@ -117,7 +137,9 @@ class CreateStoriesActivity : AppCompatActivity() {
             requestImageFile
         )
         Log.d("CreateStories", desc)
-        viewModel.uploadStories(imageMultipart, token, description)
+
+        if (isLocationChecked) viewModel.uploadStories(imageMultipart, token, description, this.lat, this.lon)
+        else viewModel.uploadStories(imageMultipart, token, description, 0.0f, 0.0f)
 
     }
     private fun startGallery() {

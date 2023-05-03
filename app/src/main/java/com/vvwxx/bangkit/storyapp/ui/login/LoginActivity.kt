@@ -32,19 +32,15 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         factory = ViewModelFactory.getInstance(this)
 
+        saveUserPrefData()
+
         loginViewModel.getUser.observe(this) { user ->
             this.user = user
             if (user.isLogin) {
-                saveUserPrefData()
+                Log.d(TAG, user.name)
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
                 finish()
-            }
-        }
-
-        loginViewModel.loginResponse.observe(this) {
-            if (it != null && !it.error) {
-                loginViewModel.loginPref()
             }
         }
 
@@ -117,9 +113,9 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginResponse.observe(this) {response ->
             if (response != null) {
                 val result = response.loginResult
-                user = UserModel(result.name, result.token, true)
-                Log.d(TAG, "nama : ${user.token}")
+                user = UserModel(result.name, result.token, true, 0.0f, 0.0f)
                 loginViewModel.saveUserPref(user)
+                loginViewModel.loginPref()
             }
         }
     }

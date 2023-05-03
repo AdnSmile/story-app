@@ -53,11 +53,13 @@ class DetailActivity : AppCompatActivity() {
             tvName.text = data.name
             tvDesc.text = data.description
             tvCreatedAt.text = data.createdAt
-            if (data.lat != null)
-                tvLat.text = data.lat.toString()
+            if (data.lat == 0.0f)
+                tvLat.text = "-"
+            else tvLat.text = data.lat.toString()
 
-            if (data.lon != null)
-                tvLon.text = data.lon.toString()
+            if (data.lon == 0.0f)
+                tvLon.text = "-"
+            else tvLon.text = data.lon.toString()
         }
     }
 

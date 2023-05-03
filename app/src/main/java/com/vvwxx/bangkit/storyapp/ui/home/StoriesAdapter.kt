@@ -42,6 +42,7 @@ class StoriesAdapter : PagingDataAdapter<ListStoryItem, StoriesAdapter.ViewHolde
 
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, DetailActivity::class.java)
+                intent.putExtra(DetailActivity.EXTRA_USER, item.id)
                 itemView.context.startActivity(intent)
             }
         }

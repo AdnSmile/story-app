@@ -144,9 +144,9 @@ class StoryAppRepository(
         })
     }
 
-    fun uploadStories(photo: MultipartBody.Part, token: String, desc: RequestBody) {
+    fun uploadStories(photo: MultipartBody.Part, token: String, desc: RequestBody, lat: Float, lon: Float) {
         _isLoading.value = true
-        val client = apiService.postStories(photo, "Bearer $token", desc)
+        val client = apiService.postStories(photo, "Bearer $token", desc, lat, lon)
         client.enqueue(object : Callback<UploadStoriesResponse> {
             override fun onResponse(
                 call: Call<UploadStoriesResponse>,
@@ -208,12 +208,17 @@ class StoryAppRepository(
         pref.saveUser(user)
     }
 
+    suspend fun setLocation(lat: Float, lon: Float){
+        pref.setLocation(lat, lon)
+    }
+
     suspend fun logout() {
         _loginRespon.value = null
         pref.logout()
     }
 
     fun getUserPref(): LiveData<UserModel> {
+        _message.value = ""
         return pref.getUser().asLiveData()
     }
 

@@ -15,9 +15,9 @@ class CreateStoriesViewModel(private val storyRepository: StoryAppRepository) : 
 
     val getUser = storyRepository.getUserPref()
 
-    fun uploadStories(photo: MultipartBody.Part, token: String, desc: RequestBody) {
+    fun uploadStories(photo: MultipartBody.Part, token: String, desc: RequestBody, lat: Float, lon: Float) {
         viewModelScope.launch {
-            storyRepository.uploadStories(photo, token, desc)
+            storyRepository.uploadStories(photo, token, desc, lat, lon)
         }
     }
 }

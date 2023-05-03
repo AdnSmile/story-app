@@ -42,6 +42,8 @@ interface ApiService {
         @Part file: MultipartBody.Part,
         @Header("Authorization") token: String,
         @Part("description") description: RequestBody,
+        @Part("lat") lat: Float,
+        @Part("lon") lon: Float
     ) : Call<UploadStoriesResponse>
 
     @GET("stories?location=1")
