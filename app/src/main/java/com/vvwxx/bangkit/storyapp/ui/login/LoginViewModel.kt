@@ -22,12 +22,6 @@ class LoginViewModel(private val storyRepository: StoryAppRepository) : ViewMode
         }
     }
 
-    fun loginPref() {
-        viewModelScope.launch {
-            storyRepository.loginPref()
-        }
-    }
-
     fun saveUserPref(user: UserModel) {
         viewModelScope.launch {
             storyRepository.saveUserPref(user)

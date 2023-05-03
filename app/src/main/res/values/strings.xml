@@ -37,4 +37,5 @@
     <string name="retry">COBA LAGI</string>
     <string name="text_foto">Foto</string>
     <string name="text_lokasi">Lokasi</string>
+    <string name="text_dont_have_account">Tidak Punya akun?</string>
 </resources>

@@ -11,7 +11,6 @@ import com.vvwxx.bangkit.storyapp.ui.login.LoginViewModel
 import com.vvwxx.bangkit.storyapp.ui.map.MapViewModel
 import com.vvwxx.bangkit.storyapp.ui.profile.ProfileViewModel
 import com.vvwxx.bangkit.storyapp.ui.register.RegisterViewModel
-import com.vvwxx.bangkit.storyapp.ui.welcome.MainViewModel
 
 class ViewModelFactory(private val pref: StoryAppRepository): ViewModelProvider.NewInstanceFactory() {
 
@@ -23,9 +22,6 @@ class ViewModelFactory(private val pref: StoryAppRepository): ViewModelProvider.
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(pref) as T
-            }
-            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
-                MainViewModel(pref) as T
             }
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
                 RegisterViewModel(pref) as T

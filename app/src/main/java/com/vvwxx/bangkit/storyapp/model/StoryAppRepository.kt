@@ -200,10 +200,6 @@ class StoryAppRepository(
         })
     }
 
-    suspend fun loginPref() {
-        pref.login()
-    }
-
     suspend fun saveUserPref(user: UserModel) {
         pref.saveUser(user)
     }

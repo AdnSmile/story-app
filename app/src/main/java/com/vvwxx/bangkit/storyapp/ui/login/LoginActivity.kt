@@ -16,6 +16,7 @@ import com.vvwxx.bangkit.storyapp.R
 import com.vvwxx.bangkit.storyapp.databinding.ActivityLoginBinding
 import com.vvwxx.bangkit.storyapp.model.UserModel
 import com.vvwxx.bangkit.storyapp.ui.home.HomeActivity
+import com.vvwxx.bangkit.storyapp.ui.register.RegisterActivity
 import com.vvwxx.bangkit.storyapp.utils.ViewModelFactory
 
 class LoginActivity : AppCompatActivity() {
@@ -26,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
     private val loginViewModel: LoginViewModel by viewModels { factory }
 
     private lateinit var user: UserModel
+    private var i = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -36,7 +38,8 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel.getUser.observe(this) { user ->
             this.user = user
-            if (user.isLogin) {
+            if (user.isLogin && i == 0) {
+                i++
                 Log.d(TAG, user.name)
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
@@ -73,9 +76,11 @@ class LoginActivity : AppCompatActivity() {
         val tvPassword = ObjectAnimator.ofFloat(binding.passwordTextView, View.ALPHA, 1f).setDuration(500)
         val etPassword = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.ALPHA, 1f).setDuration(500)
         val login = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(500)
+        val textSignup = ObjectAnimator.ofFloat(binding.textViewSignup, View.ALPHA, 1f).setDuration(500)
+        val signup = ObjectAnimator.ofFloat(binding.signupButton, View.ALPHA, 1f).setDuration(500)
 
         AnimatorSet().apply {
-            playSequentially(title, message, tvEmail, etEmail, tvPassword, etPassword, login)
+            playSequentially(title, message, tvEmail, etEmail, tvPassword, etPassword, login, textSignup, signup)
             startDelay = 500
         }.start()
     }
@@ -92,6 +97,10 @@ class LoginActivity : AppCompatActivity() {
                     loginViewModel.userLogin(email, password)
                 }
             }
+        }
+
+        binding.signupButton.setOnClickListener{
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 
@@ -115,7 +124,6 @@ class LoginActivity : AppCompatActivity() {
                 val result = response.loginResult
                 user = UserModel(result.name, result.token, true, 0.0f, 0.0f)
                 loginViewModel.saveUserPref(user)
-                loginViewModel.loginPref()
             }
         }
     }

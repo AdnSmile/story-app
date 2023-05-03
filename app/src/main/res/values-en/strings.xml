@@ -38,4 +38,5 @@
     <string name="retry">TRY AGAIN</string>
     <string name="text_foto">Photo</string>
     <string name="text_lokasi">Location</string>
+    <string name="text_dont_have_account">Dont have account?</string>
 </resources>

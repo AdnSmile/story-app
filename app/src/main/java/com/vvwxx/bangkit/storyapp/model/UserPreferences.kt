@@ -19,6 +19,12 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
         }
     }
 
+    fun getLogin(): Flow<Boolean> {
+        return dataStore.data.map {
+            it[STATE_KEY] ?: false
+        }
+    }
+
     suspend fun saveUser(user: UserModel) {
         dataStore.edit { preferences ->
             preferences[NAME_KEY] = user.name
@@ -34,19 +40,10 @@ class UserPreferences private constructor(private val dataStore: DataStore<Prefe
         }
     }
 
-    suspend fun login() {
-        dataStore.edit { preferences ->
-            preferences[STATE_KEY] = true
-        }
-    }
 
     suspend fun logout() {
         dataStore.edit { preferences ->
-            preferences[NAME_KEY] ?:""
-            preferences[TOKEN_KEY] ?:""
-            preferences[STATE_KEY] = false
-            preferences[LAT_KEY] = 0.0f
-            preferences[LON_KEY] = 0.0f
+            preferences.clear()
         }
     }
 

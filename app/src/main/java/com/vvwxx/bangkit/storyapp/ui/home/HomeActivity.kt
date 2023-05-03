@@ -11,7 +11,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.vvwxx.bangkit.storyapp.R
 import com.vvwxx.bangkit.storyapp.databinding.ActivityHomeBinding
-import com.vvwxx.bangkit.storyapp.ui.welcome.MainActivity
+import com.vvwxx.bangkit.storyapp.ui.login.LoginActivity
 import com.vvwxx.bangkit.storyapp.utils.ViewModelFactory
 
 class HomeActivity : AppCompatActivity() {
@@ -39,7 +39,7 @@ class HomeActivity : AppCompatActivity() {
 
         homeViewModel.getUser.observe(this) {user ->
             if (!user.isLogin) {
-                startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
         }
