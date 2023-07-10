@@ -1,14 +1,17 @@
 package com.vvwxx.bangkit.storyapp.ui.detail
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.vvwxx.bangkit.storyapp.data.response.Story
 import com.vvwxx.bangkit.storyapp.databinding.ActivityDetailBinding
 import com.vvwxx.bangkit.storyapp.utils.ViewModelFactory
+import com.vvwxx.bangkit.storyapp.utils.convertTime
 
 class DetailActivity : AppCompatActivity() {
 
@@ -20,6 +23,7 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var name: String
     private lateinit var createAt: String
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
@@ -47,12 +51,13 @@ class DetailActivity : AppCompatActivity() {
         setupAction()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setStoriesData(data: Story){
         with(binding) {
             setPhoto(data)
             tvName.text = data.name
             tvDesc.text = data.description
-            tvCreatedAt.text = data.createdAt
+            tvCreatedAt.text = convertTime(data.createdAt)
             if (data.lat == 0.0f)
                 tvLat.text = "-"
             else tvLat.text = data.lat.toString()

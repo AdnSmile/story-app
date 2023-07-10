@@ -6,9 +6,16 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
+import androidx.annotation.RequiresApi
 import java.io.*
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 private const val FILENAME_FORMAT = "dd-MMM-yyyy"
@@ -70,4 +77,13 @@ fun rotateImage(bitmap: Bitmap, angle: Float): Bitmap {
     val photo = Matrix()
     photo.postRotate(angle)
     return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, photo, true)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun convertTime(time: String): String {
+    val instant = Instant.parse(time)
+    val dateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC)
+    val formatter = DateTimeFormatter.ofPattern("EEEE dd:MM:yyyy")
+
+    return dateTime.format(formatter).toString()
 }
