@@ -3,8 +3,10 @@
 This Story app using Dicoding API and Google MAPS API. Build With Paging 3, XML layout, and Retrofit.
 
 ### User Interface
-<img src="https://github.com/AdnSmile/story-app/assets/70699971/eac3854f-a480-472e-8797-bc76a408d858" alt="List Stories" width="250"/>&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/AdnSmile/story-app/assets/70699971/c30a8009-d4b9-4218-953f-11df9bf2eb54" alt="Detail Story" width="250"/>&nbsp;&nbsp;&nbsp;&nbsp; <br>
-<img src="https://github.com/AdnSmile/story-app/assets/70699971/71d494fb-576c-482f-9728-6418bfcbee0b" alt="Stories Location" width="250"/>&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/AdnSmile/story-app/assets/70699971/2e8eddf1-56bd-40d5-84cd-03fa3486eb0c" alt="Add Story" width="250"/>
+<img src="https://github.com/AdnSmile/story-app/assets/70699971/fa8ea088-836f-4e14-badf-87c8b5b3a572" width="250"/>&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/AdnSmile/story-app/assets/70699971/dad25784-861a-4896-be71-4dc51505b53d" alt="Detail Story" width="250"/>&nbsp;&nbsp;&nbsp;&nbsp; <img src="https://github.com/AdnSmile/story-app/assets/70699971/eac3854f-a480-472e-8797-bc76a408d858" alt="List Stories" width="250"/>&nbsp;&nbsp;&nbsp;&nbsp; <br>
+<img src="https://github.com/AdnSmile/story-app/assets/70699971/c30a8009-d4b9-4218-953f-11df9bf2eb54" alt="Detail Story" width="250"/>&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/AdnSmile/story-app/assets/70699971/71d494fb-576c-482f-9728-6418bfcbee0b" alt="Stories Location" width="250"/>&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/AdnSmile/story-app/assets/70699971/2e8eddf1-56bd-40d5-84cd-03fa3486eb0c" alt="Add Story" width="250"/> 
+<img src="https://github.com/AdnSmile/story-app/assets/70699971/b5985735-3086-4fa4-a67d-739b6e3664b2" width="250"/>&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/AdnSmile/story-app/assets/70699971/e2ce8eb0-32fa-4c8a-a96e-ac9a402a9ff4" alt="Detail Story" width="250"/>&nbsp;&nbsp;&nbsp;&nbsp; 
 
 - ### Feature
   - **Login**, Allows users to access an application by entering their email and password.
